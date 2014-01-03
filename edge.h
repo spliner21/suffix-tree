@@ -30,4 +30,9 @@ public:
 	int getEnd();
 	void setStart(int s);
 	void setEnd(int e);
+
+	void draw()
+	{
+		cout << word.c_str();
+	}
 };
