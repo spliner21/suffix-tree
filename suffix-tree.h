@@ -16,4 +16,5 @@ public:
 	~suffixTree();
 
 	bool findEdge(char c, edgeptr &e);
+	int commonSize(string s, string m, edgeptr& e);
 };

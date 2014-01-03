@@ -2,7 +2,7 @@
 
 void main() 
 {
-	suffixTree test("abcdekjlgoabcmocdeitgn");
+	suffixTree test1("abckalabt"); //test("abcdekjlgoabmocdeitabcdgn");
 
 	system("pause");
 	

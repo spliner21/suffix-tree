@@ -18,9 +18,11 @@ private:
 public:
 	shared_ptr<edge> childNode; // left-most child
 	shared_ptr<edge> rightNode;	// right sibling
+	string word;	// roboczo!!!!!
 	
 	edge();
 	edge(int start, int end);
+	edge(int start, int end, string w);
 	edge(int start, int end, shared_ptr<edge> child, shared_ptr<edge> right);
 	~edge();
 	
@@ -28,6 +30,4 @@ public:
 	int getEnd();
 	void setStart(int s);
 	void setEnd(int e);
-
-	int commonSize(string s, string m);
 };
