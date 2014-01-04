@@ -20,7 +20,7 @@ private:
 
 			/* konstruktor przekazuj¹cy drzewo */
 			myIterator(suffixTree &x);
-			
+			myIterator(vector<edgeptr> &x);
 			/* operator przypisania innego iteratora
 			 * @param x - iterator, którego wartoœæ ma byæ przypisana
 			 */
@@ -65,7 +65,7 @@ public:
 	~suffixTree();
 
 	bool findEdge(char c, edgeptr &e);
-	int commonSize(string s, string m, edgeptr& e);
+	int commonSize(string s, string m, edgeptr& e, int& o);
 	
 	vector<edgeptr> begin();
 	vector<edgeptr> end();

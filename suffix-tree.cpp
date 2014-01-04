@@ -19,7 +19,8 @@ suffixTree::suffixTree(string s)
 		// sprawdzenie, czy od korzenia odchodzi ju¿ sufiks na tê literê
 		if(findEdge(s[i],tmp))
 		{
-			int l = commonSize(subs,s,tmp); // jak d³uga jest czêœæ wspólna sufiksów
+			int offset = 0;
+			int l = commonSize(subs,s,tmp,offset); // jak d³uga jest czêœæ wspólna sufiksów
 
 			// podzia³ sufiksu na czêœæ wspóln¹ i resztê
 			edgeptr bottomEdge = make_shared<edge>(edge(tmp->getStart()+l,tmp->getEnd(), tmp->word.substr(l,string::npos)));
@@ -31,14 +32,17 @@ suffixTree::suffixTree(string s)
 			tmp->childNode = bottomEdge;
 
 			// dodanie reszty nowego sufiksu
-			edgeptr bottomRight = make_shared<edge>(edge(i+l,s.length(),subs.substr(l,string::npos)));
-			bottomEdge->rightNode = bottomRight;
+			tmp = make_shared<edge>(edge(i+l+offset,s.length(),subs.substr(l+offset,string::npos)));
+			bottomEdge->rightNode = tmp;
 		}
 		else 
 		{
 			tmp = root->childNode;
 			if(root->childNode == nullptr)
-				root->childNode = make_shared<edge>(edge(i,s.length(),subs));
+			{
+				tmp = make_shared<edge>(edge(i,s.length(),subs));
+				root->childNode = tmp;
+			}
 			else
 			{
 				edgeptr tmp1 = tmp->rightNode;
@@ -48,8 +52,11 @@ suffixTree::suffixTree(string s)
 					tmp1 = tmp->rightNode;
 				}
 				tmp->rightNode = make_shared<edge>(edge(i,s.length(),subs));
+				tmp = tmp->rightNode;
 			}
 		}
+		if(tmp->childNode == nullptr)
+			tmp->childNode = make_shared<edge>(edge(INT_MAX,INT_MAX));	// oznaczenie koñca sufiksu
 	}
 }
 
@@ -76,7 +83,7 @@ bool suffixTree::findEdge(char c, edgeptr &e)
 }
 
 
-int suffixTree::commonSize(string s, string m, edgeptr& e)
+int suffixTree::commonSize(string s, string m, edgeptr& e, int& o)
 {
 	int si, ei;
 	si = e->getStart();
@@ -91,7 +98,8 @@ int suffixTree::commonSize(string s, string m, edgeptr& e)
 	}
 	if(findEdge(s[i],e))
 	{
-		return commonSize(s.substr(i,string::npos),m,e);
+		o+= i;
+		return commonSize(s.substr(i,string::npos),m,e,o);
 	}
 	return i;
 }
@@ -136,6 +144,11 @@ suffixTree::myIterator::myIterator(edgeptr &x)
 		y = y->childNode;
 		p.push_back(y);
 	}
+}
+
+suffixTree::myIterator::myIterator(vector<edgeptr> &x)
+{
+	p = x;
 }
 
 /* konstruktor przekazuj¹cy drzewo */
@@ -221,13 +234,14 @@ bool suffixTree::myIterator::operator==(vector<edgeptr> &x)
  */
 const vector<edgeptr> suffixTree::myIterator::next() 
 {
+	if(p.empty())
+		return vector<edgeptr>();
 	edgeptr x = p.back();
 	p.pop_back();
-	if(x == nullptr)
-		return vector<edgeptr>();
 	if(x->rightNode != nullptr)
 	{
-		p.push_back(x->rightNode);
+		x = x->rightNode;
+		p.push_back(x);
 		while(x->childNode != nullptr)
 		{
 			x = x->childNode;
