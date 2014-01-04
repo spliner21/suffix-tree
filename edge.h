@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <iostream>
+#include <string>
 #include <memory>
 
 using namespace std;
@@ -13,26 +14,25 @@ class edge
 {
 private:
 	int startIndex;	// indeks pierwszego znaku krawêdzi
-	int endIndex;	// indeks ostatniego znaku krawêdzi
+	int endIndex;	// indeks ostatniego+1 znaku krawêdzi
 	
 public:
 	shared_ptr<edge> childNode; // left-most child
 	shared_ptr<edge> rightNode;	// right sibling
-	string word;	// roboczo!!!!!
 	
-	edge();
-	edge(int start, int end);
-	edge(int start, int end, string w);
-	edge(int start, int end, shared_ptr<edge> child, shared_ptr<edge> right);
-	~edge();
+	edge();	// konstruktor domyœlny
+	edge(int start, int end);	// konstruktor w oparciu o indeksy pocz¹tku i koñca krawêdzi
+	edge(int start, int end, shared_ptr<edge> child, shared_ptr<edge> right);	// konstruktor otrzymuj¹cy potomka i prawego brata
+	~edge();	// destruktor domyœlny
 	
-	int getStart();
-	int getEnd();
-	void setStart(int s);
-	void setEnd(int e);
+	int getStart();	// getter dla indeksu pierwszego znaku
+	int getEnd();	// getter dla indeksu ostatniego+1 znaku
+	void setStart(int s);	// setter dla indeksu pierwszego znaku
+	void setEnd(int e);		// setter dla indeksu ostatniego+1 znaku
 
-	void draw()
+	void draw(string s)	// metoda do testu - wyœwietlanie tekstu krawêdzi
 	{
-		cout << word.c_str();
+		if(startIndex != INT_MAX)
+			cout << s.substr(startIndex, endIndex-startIndex);
 	}
 };

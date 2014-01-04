@@ -8,7 +8,7 @@ void main()
 
 	while(!(sfxit == test1.end()))
 	{
-		sfxit.draw_sfx();
+		sfxit.draw_sfx("abckalabt");
 		sfxit++;
 	}
 
