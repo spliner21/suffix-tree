@@ -25,7 +25,7 @@ suffixTree::suffixTree(string s)
 	for(unsigned int i=0; i< s.length(); ++i)
 	{
 
-/*		if(!isalnum(s[i]))	// w taki sposób mo¿na pomijaæ w drzewie krawêdzie nie zaczynaj¹ce siê na literê lub cyfrê
+		/*if(!isalnum(s[i]))	// w taki sposób mo¿na pomijaæ w drzewie krawêdzie nie zaczynaj¹ce siê na literê lub cyfrê
 			continue; */
 
 		subs = s.substr(i,string::npos);	// "wycinanie" treœci sufiksu ze s³owa

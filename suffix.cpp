@@ -1,5 +1,6 @@
 #include "suffix.h"
 
+
 void main() 
 {
 	setlocale (LC_ALL, "");	// polskie znaki w konsoli
