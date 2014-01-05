@@ -19,31 +19,46 @@ suffixTree::suffixTree(string s)
 	sequence = s;	// zapisanie s³owa
 	edgeptr tmp,tmp1;	// zmienna tymczasowa - wskaŸnik na krawêdŸ
 
+	string subs;
+	int offset,l;
 	// pêtla wstawiaj¹ca sufiksy w kolejnoœci od najd³u¿szego do najkrótszego
 	for(unsigned int i=0; i< s.length(); ++i)
 	{
-		string subs = s.substr(i,string::npos);	// "wycinanie" treœci sufiksu ze s³owa
+
+/*		if(!isalnum(s[i]))	// w taki sposób mo¿na pomijaæ w drzewie krawêdzie nie zaczynaj¹ce siê na literê lub cyfrê
+			continue; */
+
+		subs = s.substr(i,string::npos);	// "wycinanie" treœci sufiksu ze s³owa
 
 		tmp = root;
-		int offset,l;
 		// sprawdzenie, czy od korzenia odchodzi ju¿ sufiks na tê literê
 		if(findEdge(s[i],tmp))
 		{
 			offset = 0;	// zmienna pomocnicza - stosowana dla przejœæ miêdzy krawêdziami przy wyszukiwaniu d³ugoœci czêœci wspólnej
 			l = commonSize(subs,tmp,offset); // jak d³uga jest czêœæ wspólna sufiksów
 
-			// podzia³ sufiksu na czêœæ wspóln¹ i resztê
-			// tmp = czêœæ górna przy podziale, bottomEdge = czêœæ dolna
-			edgeptr bottomEdge = make_shared<edge>(edge(tmp->getStart()+l,tmp->getEnd()));
-			tmp->setEnd(tmp->getStart()+l);
+			if(l < tmp->getEnd() - tmp->getStart())
+			{
+				// podzia³ sufiksu na czêœæ wspóln¹ i resztê
+				// tmp = czêœæ górna przy podziale, bottomEdge = czêœæ dolna
+				edgeptr bottomEdge = make_shared<edge>(edge(tmp->getStart()+l,tmp->getEnd()));
+				tmp->setEnd(tmp->getStart()+l);
 
-			// po³¹czenie czêœci krawêdzi sufiksu
-			bottomEdge->childNode = tmp->childNode;
-			tmp->childNode = bottomEdge;
+				// po³¹czenie czêœci krawêdzi sufiksu
+				bottomEdge->childNode = tmp->childNode;
+				tmp->childNode = bottomEdge;
+				tmp1 = bottomEdge;
+			}
+			else
+			{
+				tmp1 = tmp->childNode;
+				while(tmp1->rightNode != nullptr)
+					tmp1 = tmp1->rightNode;
+			}
 
 			// dodanie reszty nowego sufiksu
 			tmp = make_shared<edge>(edge(i+l+offset,s.length()));
-			bottomEdge->rightNode = tmp;
+			tmp1->rightNode = tmp;
 		}
 		else 
 		{
@@ -119,7 +134,7 @@ int suffixTree::commonSize(string s, edgeptr& e, int& o)
 		if(s[i] != subm[i])	// jeœli znaki siê ró¿ni¹, to zwróæ iloœæ przebadanych znaków jako rezultat
 			return i;
 	}
-	if(findEdge(s[i],e))	// jeœli ca³a krawêdŸ siê zgadza, to sprawdŸ, czy potomek nie zaczyna siê na zgodny znak
+	if(s.length() > i && findEdge(s[i],e))	// jeœli ca³a krawêdŸ siê zgadza, to sprawdŸ, czy potomek nie zaczyna siê na zgodny znak
 	{
 		o += i;	// jeœli tak, to zwiêksz offset o d³ugoœæ krawêdzi badanej w tej metodzie
 		return commonSize(s.substr(i,string::npos),e,o);	// i sprawdŸ ile znaków zgadza siê w reszcie sufiksu i s³owie
