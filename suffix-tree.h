@@ -55,15 +55,15 @@ public:
 	typedef myIterator const_iterator;		// definicja typu const_iteratora
 
 	suffixTree();	// konstruktor domyœlny
-	suffixTree(string sequence);	// konstruktor w oparciu o s³owo
+	suffixTree(const string& sequence);	// konstruktor w oparciu o s³owo
 	~suffixTree();	// destruktor domyœlny
 
 	bool findEdge(char c, edgeptr &e);	// wyszukiwanie krawêdzi, która zaczyna siê na znak c
-	int commonSize(string s, edgeptr& e, int& o);	// sprawdzenie jak d³uga jest czêœæ wspólna krawêdzi e i sufiksu s
+	int commonSize(const string& s, edgeptr& e, int& o);	// sprawdzenie jak d³uga jest czêœæ wspólna krawêdzi e i sufiksu s
 	
-	vector<edgeptr> begin();	// metoda zwracaj¹ca wskaŸnik na pierwszy sufiks w drzewie
-	vector<edgeptr> end();		// metoda zwracaj¹ca wskaŸnik na warunek stopu w drzewie
-	vector<edgeptr> back();		// metoda zwracaj¹ca wskaŸnik na ostatni sufiks w drzewie
+	const_iterator begin();	// metoda zwracaj¹ca wskaŸnik na pierwszy sufiks w drzewie
+	const_iterator end();		// metoda zwracaj¹ca wskaŸnik na warunek stopu w drzewie
+	const_iterator back();		// metoda zwracaj¹ca wskaŸnik na ostatni sufiks w drzewie
 
 	edgeptr& getFirst()	// metoda pomocnicza - zwraca wskaŸnik na pierwsz¹ krawêdŸ w drzewie
 	{

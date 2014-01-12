@@ -12,7 +12,7 @@ suffixTree::suffixTree()
  * @param s: s³owo, dla którego ma byæ utworzone drzewo sufiksów
  * @author: Tomasz Szo³tysek
  */
-suffixTree::suffixTree(string s) 
+suffixTree::suffixTree(const string& s) 
 {
 	root = make_shared<edge>(edge(-1,-1));	// inicjalizacja korzenia
 
@@ -121,7 +121,7 @@ bool suffixTree::findEdge(char c, edgeptr &e)
  * @param o: offset stosowany w razie przejœæ na potomstwo krawêdzi - zawiera sumê d³ugoœci krawêdzi przodków
  * @return: d³ugoœæ czêœci wspólnej ostatniego potomstwa i sufiksu skróconej od góry o offset
  */
-int suffixTree::commonSize(string s, edgeptr& e, int& o)
+int suffixTree::commonSize(const string& s, edgeptr& e, int& o)
 {
 	int si, ei;	// indeksy pocz¹tku i koñca krawêdzi
 	si = e->getStart();
@@ -146,7 +146,7 @@ int suffixTree::commonSize(string s, edgeptr& e, int& o)
  * @return: wektor wskaŸników na krawêdzie pierwszego sufiksu w drzewie
  * @author: Tomasz Szo³tysek
  */
-vector<edgeptr> suffixTree::begin()
+suffixTree::const_iterator suffixTree::begin()
 {
 	vector<edgeptr> p;
 	edgeptr x = root;
@@ -155,23 +155,23 @@ vector<edgeptr> suffixTree::begin()
 		x = x->childNode;
 		p.push_back(x);
 	}
-	return p;
+	return const_iterator(p);
 }
 
 /* Metoda zwracaj¹ca warunek stopu
  * @return: pusty wektor wskaŸników na krawêdzie
  * @author: Tomasz Szo³tysek
  */
-vector<edgeptr> suffixTree::end()
+suffixTree::const_iterator suffixTree::end()
 {
-	return vector<edgeptr>();
+	return const_iterator(vector<edgeptr>());
 }
 
 /* Metoda zwracaj¹ca ostatni sufiks drzewa
  * @return: wektor wskaŸników na krawêdzie ostatniego sufiksu w drzewie
  * @author: Tomasz Szo³tysek
  */
-vector<edgeptr> suffixTree::back()
+suffixTree::const_iterator suffixTree::back()
 {
 	vector<edgeptr> p;
 	edgeptr x = root;
@@ -182,7 +182,7 @@ vector<edgeptr> suffixTree::back()
 			x = x->rightNode;
 		p.push_back(x);
 	}
-	return p;
+	return const_iterator(p);
 }
 
 /* Konstruktor iteratora w oparciu o wskaŸnik na krawêdŸ
